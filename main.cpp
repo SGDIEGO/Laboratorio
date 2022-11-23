@@ -293,7 +293,7 @@ void temporizador1(int t)
 
 #pragma region Variables de animacion
 
-float TagacharBrazo = 1, TagacharBrazo2 = 2, rotarVariable01 = 0, trasladoBrazoX = 0.3, trasladoBrazoX2 = 0.12, trasladoBrazoY = 0.3, trasladoBrazoZ = 0.3;
+float TagacharBrazo = 1, TagacharBrazo2 = 2, rotarVariable01 = 0, trasladoBrazoX = 0.3, trasladoBrazoX2 = 0.12, trasladoBrazoY = 0.2, trasladoBrazoZ = 0.3, trasladoBrazoZ2 = 0.4;
 bool animacion01 = true, animacion02 = false, animacion03 = false;
 
 #pragma endregion
@@ -332,6 +332,11 @@ bool mirarL1 = false;
 float rotarCuerpo = 0.5;
 int nVeces = 10, j = 0;
 int Npasos2 = 3, k = 0;
+float rotarCabeza01 = 1.5;
+float rotarC = 20;
+
+int nVeces2 = 5, j2 = 0;
+
 #pragma endregion
 
 bool reiniciar = true;
@@ -562,8 +567,10 @@ void animacionLinterna(int t)
             rotarVariable01 += TagacharBrazo;
             rotarAnteBrazo1 -= TagacharBrazo;
 
-            TrasladarBrazoZ2 += trasladoBrazoZ;
+            TrasladarBrazoZ2 += trasladoBrazoZ2;
+            TrasladarBrazoZ1 += 0.15;
             TrasladarBrazoY2 += trasladoBrazoY;
+            TrasladarBrazoY1 += trasladoBrazoY/2.0;
 
             if (TrasladarBrazoY2 <= 0)
                 trasladoBrazoY = 0;
@@ -608,7 +615,6 @@ void animacionLinterna(int t)
             }
             
             rotarCuerpo2Y += rotarCuerpo;
-            
         }
         
         if (parte4)
@@ -621,6 +627,8 @@ void animacionLinterna(int t)
             
             TrasladarBrazoX2 += trasladoBrazoX2;
             TrasladarBrazoY2 += trasladoBrazoY;
+            rotarCabeza21 += 0.3;
+            rotarCabeza32 += 0.8;
 
             if ((TrasladarBrazoY2 <= 0))
             {
@@ -639,12 +647,56 @@ void animacionLinterna(int t)
 
         if (parte5)
         {
-            TrasladarBrazoY2 += trasladoBrazoY;
+            if (j2 >= nVeces2)
+            {
+                trasladoBrazoY = 0.2;
+                rotarCabeza01 = 0;
+                parte5 = false;
+                parte6 = true;
+            }
             
-            if ((TrasladarBrazoY2 >= 5) || (TrasladarBrazoY2 <= 2.5))
+            TrasladarBrazoY2 += trasladoBrazoY;
+            rotarCabeza12 += rotarCabeza01;
+            rotarC += rotarCabeza01;
+
+            if ((rotarC <= 20))
+            {
+                rotarCabeza01 = -rotarCabeza01;
+            }
+
+            if ((TrasladarBrazoY2 <= 2.5) || (TrasladarBrazoY2 >= 5))
+            {
+                trasladoBrazoY = -trasladoBrazoY;
+            }
+            
+            if ((rotarC >= 60))
+            {
+                j2++;
+                rotarCabeza01 = -rotarCabeza01;
+            }
+        }
+
+        if (parte6)
+        {
+            TrasladarBrazoX2 -= trasladoBrazoX2;
+            TrasladarBrazoY2 += trasladoBrazoY;
+
+            if (TrasladarBrazoY2 <= 0)
+            {
+                parte6 = false;
+                parte7 = true;
+            }
+            
+            if ((TrasladarBrazoY2 >= 5) )
                 trasladoBrazoY = -trasladoBrazoY;
         }
-                
+        
+        if (parte7)
+        {
+            /* code */
+        }
+        
+            
     }
     
     glutPostRedisplay();
